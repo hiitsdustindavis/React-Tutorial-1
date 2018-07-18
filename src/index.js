@@ -31,7 +31,6 @@ import ReactDOM from 'react-dom';
 import SearchBar from './components/search_bar';
 require('./config');
 
-
 // "const" is an ES6 (ES2016) piece of syntax - It's declaring a variable, but this is the final unchanging value. App will always have the same value.
 
 // const App = function() { -- We can use the "fat arrow" ES6 syntax to define a function. It seems that brevity is a possible theme of ES6? ¯\_(ツ)_/¯
