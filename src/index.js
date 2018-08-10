@@ -32,7 +32,8 @@ import YTSearch from 'youtube-api-search';
 // We don't need to include a file path when importing packages like React and ReactDOM because the are namespaced (there is only one package for each)
 import SearchBar from './components/search_bar';
 import VideoList from './components/video_list';
-// import APIKey from './config';
+import VideoDetail from './components/video_detail';
+
 
 
 // "const" is an ES6 (ES2016) piece of syntax - It's declaring a variable, but this is the final unchanging value. App will always have the same value.
@@ -69,6 +70,7 @@ constructor(props) {
     return (
       <div>
         <SearchBar />
+        <VideoDetail video={this.state.videos[0]}/>
         <VideoList videos={this.state.videos}/>
       </div>
     )

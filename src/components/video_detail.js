@@ -1,8 +1,14 @@
 import React from 'react';
 
 const VideoDetail = ({video}) => {
-  const videoID = video.id.videoId;
+  //We need to check if the video property is empty because React wont wait long enough for our YTSearch() function to finish returning results from Youtube before running the render method of the App function in index.js. Without this check video will have no value and will error as undefined.
+  if(!video) {
+    return <div>Loading...</div>;
+  }
+  const videoId = video.id.videoId;
   const url = `https://www.youtube.com/embed/${videoId}`;
+
+
   return (
     <div className = 'video-detail col-md-8'>
       <div className = 'embed-responsive embed-responsive-16by9'>
