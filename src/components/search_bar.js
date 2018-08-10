@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Component } from 'react';
 
 // The following function being stored in SearchBar is what's known as a Function Component in React. It's simple. It could even take in an argument and will return some JSX. For broader functionality we will use a Class Component.
 // const SearchBar = () => {
@@ -33,7 +33,8 @@ import React from 'react';
 
 // Controlled component has its value set by state instead of its value telling state what to be. Example is the input value telling state to update.
 
-class SearchBar extends React.Component {
+// We could write "class SearchBar extends React.Component" for our class based SearchBar Componen, but because we included the component call in our import call at the beginning of this file we can just write "class SearchBar extends Component"
+class SearchBar extends Component {
   constructor(props) {
     super(props);
     //super() is allows us to call a parent method on the parent class. In this case the parent class is React.Component which has its own constructor function among many other functions.

@@ -19,32 +19,60 @@
 // Line below basically says go find React library from our Node Package installed in the folder called 'react'
 // This makes the react library available in this file.
 // 'React' is a variable representing the library
-import React from 'react';
+import React, { Component } from 'react';
 
-// To actually render something to the DOM we don't use the React Library. W
+// To actually render something to the DOM we don't use the React Library.
 // We use the ReactDOM library instead
 import ReactDOM from 'react-dom';
+
+import YTSearch from 'youtube-api-search';
 
 // Here we import the SearchBar const from the search_bar.js file
 // When we include a file that we write ourselves we need to include a relative path for React to find it
 // We don't need to include a file path when importing packages like React and ReactDOM because the are namespaced (there is only one package for each)
 import SearchBar from './components/search_bar';
-require('./config');
+import VideoList from './components/video_list';
+// import APIKey from './config';
+
 
 // "const" is an ES6 (ES2016) piece of syntax - It's declaring a variable, but this is the final unchanging value. App will always have the same value.
-
 // const App = function() { -- We can use the "fat arrow" ES6 syntax to define a function. It seems that brevity is a possible theme of ES6? ¯\_(ツ)_/¯
-const App = () => {
-  // The "HTML" below is actually JSX which is a subset, or dialect of Javascript. It looks like HTML, but really behind the scenes it is just Javascript. JSX cannot be read by the browser. It represents the HTML that will be transpiled by Webpack and Babel before being compiled into a single JS file for the browser.
-  // When we write <div>Hi!</div> in JSX React calls createElement for us. Specifically it produces:
-    //  "React.createElement("div", null, "Hi!");"
-  // return <div>Hi!</div>;
 
-  return (
-    <div>
-      <SearchBar />
-    </div>
-  )
+class App extends Component {
+
+// REFACTORED ABOVE to be class based component instead of a functional one so we can access State. Also class based components always need a render function within so we added that around the return() below.
+// const App = () => {
+
+constructor(props) {
+  super(props);
+
+  // When App is started the list of videos is an empty array. The instant that the component is rendered the YTSearch function kicks off a search and when the search is complete it will update the value this.state.videos with a new list of videos
+  this.state = { videos: [] };
+
+  // We are going to make a call to the Youtube API and we are going to spread that info all around our application. What we search for in the API needs to flow throughout all of our components.
+  // Which compononent should actually be responsible for fetching that list of videos? The answer to this is in a React concept called "DOWNWARDS DATA FLOW" which means that the parent-most component should be responsible for fetching data. In this case index.js is the component heighest in the family tree of our app.
+  // Apparently this is similar to jQuery's get() function wher the first argument is a configuration and the second argument is a call back function to return the response data?
+  // In the this.setState functions we are creating an object where the key and the value are the same, "videos" When this is the case we can use some ES6 syntax and change { videos: videos } to just { videos }
+  // We are also using another ES6 syntax in changing the function keyword to the "fat arrow" syntax. "function(videos)" becomes "(videos) =>"
+  YTSearch({key: youtubeAPI_key, term: 'satisfying'}, (videos) => {
+    this.setState({ videos });
+  })
+}
+
+// The "HTML" below is actually JSX which is a subset, or dialect of Javascript. It looks like HTML, but really behind the scenes it is just Javascript. JSX cannot be read by the browser. It represents the HTML that will be transpiled by Webpack and Babel before being compiled into a single JS file for the browser.
+// When we write <div>Hi!</div> in JSX React calls createElement for us. Specifically it produces:
+  //  "React.createElement("div", null, "Hi!");"
+// return <div>Hi!</div>;
+// We can pass properties from App to the VideoList Component by defining a property on the JSX tag
+// Passing data like this is referred to as "Passing Props" In this case we are passing prop "videos" to VideoList. Anytime the App re-renders VideoList will get the new list of videos because we use "this.setState()" in the YTSearch function.
+  render(){
+    return (
+      <div>
+        <SearchBar />
+        <VideoList videos={this.state.videos}/>
+      </div>
+    )
+  }
 }
 
 /*
